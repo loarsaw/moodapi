@@ -1,19 +1,11 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, urlencoded } from "express";
 import dotenv from "dotenv";
-
-// configures dotenv to work in your application
+import routes from "./routes";
 dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT;
 
-app.get("/", (request: Request, response: Response) => { 
-  response.status(200).send("Hello World");
-}); 
-
-app.listen(PORT, () => { 
-  console.log("Serever running at PORT: ", PORT); 
-}).on("error", (error) => {
-  // gracefully handle error
-  throw new Error(error.message);
+app.use(routes()).listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
