@@ -53,6 +53,16 @@ class DATABASE_SERVICE {
       throw new Error(error);
     }
   }
+
+  public async get_all_documents_of_collection(collection_name: string) {
+    try {
+      await this.initialize();
+      const topics = this.db?.collection(collection_name).find({}).toArray();
+      return topics;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default new DATABASE_SERVICE();
