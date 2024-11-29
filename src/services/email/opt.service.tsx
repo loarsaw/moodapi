@@ -1,23 +1,23 @@
 import {
-    SESClient,
-    SESClientConfig,
-    SendEmailCommand,
+  SESClient,
+  SESClientConfig,
+  SendEmailCommand,
 } from "@aws-sdk/client-ses";
 import "dotenv/config";
 
 const config: SESClientConfig = {
-    credentials: {
-        accessKeyId: process.env.AWS_SES_MAIL_ID ?? "",
-        secretAccessKey: process.env.AWS_SES_MAIL_SECRET ?? "",
-    },
-    region: process.env.AWS_REGION ?? "",
+  credentials: {
+    accessKeyId: process.env.AWS_SES_MAIL_ID ?? "",
+    secretAccessKey: process.env.AWS_SES_MAIL_SECRET ?? "",
+  },
+  region: process.env.AWS_REGION ?? "",
 };
 
 const client = new SESClient(config);
 const senderAddress = "no-reply@quickcourse.xyz";
 
 const email_template = (email: string, otp_token: string) => {
-    const template = `<!DOCTYPE html>
+  const template = `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -102,7 +102,7 @@ const email_template = (email: string, otp_token: string) => {
                   You requested an OTP for verification. Please use the code
                   below:
                 </p>
-                <div class="otp-code">123456</div>
+                <div class="otp-code">${otp_token}</div>
                 <p>
                   If you did not request this code, please ignore this email or
                   contact support if you have concerns.
@@ -126,35 +126,35 @@ const email_template = (email: string, otp_token: string) => {
   </body>
 </html>
 `
-    const input = {
-        Source: senderAddress,
-        Destination: {
-            ToAddresses: [email],
+  const input = {
+    Source: senderAddress,
+    Destination: {
+      ToAddresses: [email],
+    },
+    Message: {
+      Subject: {
+        Data: "EMAIL OTP",
+        Charset: "UTF-8",
+      },
+      Body: {
+        Html: {
+          Data: template,
+          Charset: "UTF-8",
         },
-        Message: {
-            Subject: {
-                Data: "EMAIL OTP",
-                Charset: "UTF-8",
-            },
-            Body: {
-                Html: {
-                    Data: template,
-                    Charset: "UTF-8",
-                },
-            },
-        },
-    };
-    return input;
+      },
+    },
+  };
+  return input;
 };
 
 export const sendOtpMail = async (email: string, token: string) => {
-    const otp_token = token;
-    const mail_obj = email_template(email, otp_token);
-    try {
-        const command = new SendEmailCommand(mail_obj);
-        return await client.send(command);
-        // return true;
-    } catch (error) {
-        console.log(error);
-    }
+  const otp_token = token;
+  const mail_obj = email_template(email, otp_token);
+  try {
+    const command = new SendEmailCommand(mail_obj);
+    return await client.send(command);
+    // return true;
+  } catch (error) {
+    console.log(error);
+  }
 };
