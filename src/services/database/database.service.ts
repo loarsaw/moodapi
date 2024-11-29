@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { Singleton } from "../../lib/singleton";
 import { getMongoDBInstance } from "../../mongo/instance";
 
@@ -11,7 +11,7 @@ class DATABASE_SERVICE {
   };
 
   public async get_single_document(
-    id: string,
+    id: string | ObjectId,
     collection_name: string,
     key_against: string
   ) {
