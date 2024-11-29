@@ -63,6 +63,17 @@ class DATABASE_SERVICE {
       throw new Error(error);
     }
   }
+
+  public async get_documents_except(id_array: []) {
+    await this.initialize();
+    const ques_sets = await this.db
+      ?.collection("sets")
+      .find({ _id: { $nin: id_array } })
+      .limit(5)
+      .toArray();
+    console.log(ques_sets);
+    return ques_sets;
+  }
 }
 
 export default new DATABASE_SERVICE();

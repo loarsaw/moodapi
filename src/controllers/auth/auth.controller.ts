@@ -14,6 +14,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await authService.findUserByEmail({ email: email });
       if (user) {
+        console.log(user.password == password);
         if (user.password == password) {
           const accessToken = jwt.sign(
             { uid: user._id },
@@ -29,6 +30,7 @@ class AuthController {
               expiresIn: "7d",
             }
           );
+          console.log("responded");
           res
             .status(200)
             .json({ accessToken: accessToken, refreshToken: refreshToken });
