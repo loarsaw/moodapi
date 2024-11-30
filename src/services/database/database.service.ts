@@ -37,7 +37,7 @@ class DATABASE_SERVICE {
     }
   };
   public async update_document(
-    id: string,
+    id: string | ObjectId,
     data: any,
     collection_name: string,
     key_against: string,
@@ -45,9 +45,14 @@ class DATABASE_SERVICE {
   ) {
     try {
       await this.initialize();
+      console.log(data, "hi" , id);
       const topic = this.db
         ?.collection(collection_name)
-        .updateOne({ [key_against]: id }, { $push: { [key_to_update]: data } });
+        .updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { name: data } },
+          { upsert: true }
+        );
       return topic;
     } catch (error: any) {
       throw new Error(error);

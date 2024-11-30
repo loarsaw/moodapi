@@ -15,7 +15,7 @@ const verifyAuth = (req: Request, res: Response, next: NextFunction): void => {
     if (err) {
       res.status(403).json({ error: "Invalid token." });
     }
-    console.log(decoded);
+    // console.log(decoded, "token");
     if (decoded && typeof decoded === "object") {
       req.body.uid = decoded.uid;
       console.log("verified");

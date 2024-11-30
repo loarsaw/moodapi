@@ -4,4 +4,5 @@ import verifyAuth from "../../middleware/auth.middleware";
 
 export default (router: Router) => {
   router.get("/get-user", verifyAuth, userController.getUserData);
+  router.post("/update-user", verifyAuth, userController.updateUserData);
 };

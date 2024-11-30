@@ -15,7 +15,27 @@ class UserController {
         USERS,
         "_id"
       );
+      console.log(user_data);
       res.status(200).json({ userData: user_data });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  public updateUserData = async (req: Request, res: Response) => {
+    try {
+      const data = req.body;
+      console.log(data);
+
+      const updated_data = await databaseService.update_document(
+        data.uid,
+        data.fullName,
+        "techno_user",
+        "_id",
+        "name"
+      );
+      console.log(updated_data);
+      res.status(200).json({ message: "Name Updated" });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal server error" });
